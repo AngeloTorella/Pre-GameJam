@@ -480,6 +480,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMoveSpeed: 10
   playerJumpForce: 13
+  playerWallJumpForce: 10
   grounLayer:
     serializedVersion: 2
     m_Bits: 64
