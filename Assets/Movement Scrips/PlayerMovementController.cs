@@ -14,12 +14,12 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private float largo = 1.0f;
     [SerializeField] private float ancho = 1.0f;
 
-    private CircleCollider2D CircleCollider2D;
-
     private Rigidbody2D rb2D;
     private Animator    animator;
 
     private float       inputX;
+
+    private bool        isGrounded;
 
 
     void Start()
@@ -27,15 +27,15 @@ public class PlayerMovementController : MonoBehaviour
         this.animator = GetComponent<Animator>();
         this.rb2D = GetComponent<Rigidbody2D>();
 
-        CircleCollider2D = GetComponent<CircleCollider2D>();
+        this.isGrounded = true;
+
     }
 
-    private bool FixedUpdate()
+    void FixedUpdate()
     {
         //Actualiza el estado del booleano isGrouded cada frame
-        bool isGrounded = Physics2D.OverlapBox(grounSensorT.position, new Vector3(largo, ancho, 0), 0f, grounLayer);
+        isGrounded = Physics2D.OverlapBox(grounSensorT.position, new Vector3(largo, ancho, 0), 0f, grounLayer);
         Debug.Log(isGrounded.ToString());
-        return isGrounded;
     }
 
     void Update()
@@ -46,7 +46,7 @@ public class PlayerMovementController : MonoBehaviour
         rb2D.velocity = new Vector2(inputX * playerMoveSpeed, rb2D.velocity.y);
 
         // Salto
-        if (Input.GetButtonDown("Jump") && FixedUpdate())
+        if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rb2D.AddForce(new Vector2(0f, playerJumpForce), ForceMode2D.Impulse);
         }
