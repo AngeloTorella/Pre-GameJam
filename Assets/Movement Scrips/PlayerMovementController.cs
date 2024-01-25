@@ -30,6 +30,8 @@ public class PlayerMovementController : MonoBehaviour
     private bool        isGrounded;
     private bool        isWallJumping;
 
+    private float speed;
+
 
     void Start()
     {
@@ -57,7 +59,13 @@ public class PlayerMovementController : MonoBehaviour
         //actualiza el estado del booleano isWalled cada frame
         isWalled = Physics2D.OverlapCircle(wallSensorT.position, 0.1f, wallLayer);
         Debug.Log("wall: "+isWalled.ToString());
-            
+
+        speed = playerMoveSpeed;
+        if (rb2D.velocity.y < -0.1f)
+        {
+            //cambiar la velociadad de speed a .5 playerspeed
+            speed = playerMoveSpeed * 0.5f;
+        }
     }
 
     void Update()
@@ -89,7 +97,7 @@ public class PlayerMovementController : MonoBehaviour
         Debug.Log(direccion);
 
         //Movimiento horizontal
-        rb2D.velocity = new Vector2(inputX * playerMoveSpeed, rb2D.velocity.y);
+        rb2D.velocity = new Vector2(inputX * speed, rb2D.velocity.y);
 
         // Salto
         if (Input.GetButtonDown("Jump") )
@@ -98,7 +106,7 @@ public class PlayerMovementController : MonoBehaviour
             {
                 rb2D.AddForce(new Vector2(0.0f , playerJumpForce), ForceMode2D.Impulse);
             }
-            else if (isWalled && !isGrounded)
+            else if (isWalled)
             {
                 isWallJumping = true;
                 StartCoroutine(WallJump());
