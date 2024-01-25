@@ -64,8 +64,10 @@ public class PlayerMovementController : MonoBehaviour
         if (rb2D.velocity.y < -0.1f)
         {
             //cambiar la velociadad de speed a .5 playerspeed
-            speed = playerMoveSpeed * 0.5f;
+            speed = playerMoveSpeed * .7f;
         }
+        Debug.Log("speed: "+ rb2D.velocity.y.ToString());
+
     }
 
     void Update()
@@ -126,7 +128,8 @@ public class PlayerMovementController : MonoBehaviour
     {
         inputX *= -1;
         rb2D.velocity = new Vector2(playerWallJumpForce * direccion * -1, playerJumpForce);
-        yield return new WaitForSeconds(0.5f);
+        //esperar hasta que la velocidad en y sea menor a 0.1
+        yield return new WaitUntil(() => rb2D.velocity.y < -0.1f);
         isWallJumping = false;
     }
 }
