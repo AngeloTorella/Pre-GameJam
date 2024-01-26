@@ -87,11 +87,11 @@ public class PlayerMovementController : MonoBehaviour
         //actualizar direccion sprite
         if (direccion == 1)
         {
-            spriteRenderer.flipX = true;
+            spriteRenderer.flipX = false;
         }
         else if (direccion == -1)
         {
-            spriteRenderer.flipX = false;
+            spriteRenderer.flipX = true;
         }
 
         Debug.Log(direccion);
@@ -125,6 +125,7 @@ public class PlayerMovementController : MonoBehaviour
     IEnumerator WallJump()
     {
         inputX *= -1;
+        spriteRenderer.flipX = !spriteRenderer.flipX;
         rb2D.velocity = new Vector2(playerWallJumpForce * direccion * -1, playerJumpForce);
         yield return new WaitForSeconds(0.5f);
         isWallJumping = false;
